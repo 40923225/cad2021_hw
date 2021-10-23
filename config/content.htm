@@ -6,6 +6,7 @@
 <p>網站連結:<a href="https://40923225.github.io/cad2021_hw/content/index.html"> https://40923225.github.io/cad2021_hw/content/index.html</a></p>
 <p>其他與作者或作業相關資料說明或介紹</p>
 <h1>Task</h1>
+<h2>hwpages(run)</h2>
 <!-- 導入 brython 程式庫 -->
 <script src="/static/brython.js"></script>
 <script src="/static/brython_stdlib.js"></script>
@@ -16,15 +17,46 @@ brython({debug:1, pythonpath:['/static/','./../downloads/py/']});
 }
 </script>
 <div id="brython_div"></div>
-<script>
+<script type="text/python">
 from browser import html
 from browser import document
 import random
 
 brython_div = document["brython_div"]
 
-url = "https://gist.githubusercontent.com/mdecourse/e896a4705a95ac8cc4147b355b0e87ef/raw/8954b8280c524c5781dc3c0b3565bc489d3aa3a3/cango_gear1.py"
-    prog = open(url).read()
+url = "https://gist.githubusercontent.com/mdecourse/b11a88a98655d41055c47f08fe94788f/raw/8a27e6885ee1a5074bcf864d741679afeac796c4/2b_w2_stud_list.txt"
+
+data = open(url).readlines()
+# 檢查資料筆數, 第一筆為 title
+#print(data)
+#print(len(data))
+data = data[1:]
+#print(data)
+
+# 根據 href 與 content 將 html 元件中的 anchor 插入頁面
+def makeLink(href, content):
+    brython_div <= html.A(content, href=href)
+    #brython_div <= html.BR()
+
+
+# 從學員資料中隨機取出 10 位學員的網頁進行查核
+select = 10
+course = "cad2021"
+
+for i in range(len(data)):
+    num_github = data[i] 
+    num = num_github.split("\t")[0]
+    account = num_github.split("\t")[1]
+    if account == "":
+        account = num
+    content = str(num)
+    hwhref = "https://"+ str(account) + ".github.io/"+course+ "_hw"
+    repohref = "https://github.com/"+ str(account) +"/"+course +"_hw"
+    brython_div <= "repo: "
+    makeLink(repohref, content)
+    brython_div <= " www: "
+    makeLink(hwhref, content)
+    brython_div <= html.BR()
 
     # 將程式載入編輯區
     Ace.editor.setValue(prog)
@@ -143,7 +175,7 @@ end</pre>
 <p>(From: <a href="/downloads/2016_ADDITIVE MANUFACTURING PROCESSES FOR FABRICATING A MINI ROBOT - COMPUTATIONAL MODELS AND EXPERIMENTAL RESULTS.pdf">2016_ADDITIVE MANUFACTURING PROCESSES FOR FABRICATING A MINI ROBOT - COMPUTATIONAL MODELS AND EXPERIMENTAL RESULTS.pdf</a>)</p>
 <p><iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen" frameborder="0" height="315" src="https://www.youtube.com/embed/2pFReCfDZsU" title="YouTube video player" width="560"></iframe></p>
 <p><br/><br/></p>
-<h2>CAD1 繪圖(Onshape)</h2>
+                                                                                       <h2>CAD1 繪圖(Onshape)</h2>
 <p>CAD1 指各學員所分配到的第一套參數式 CAD 套件, 其中包括 Solidworks, Inventor, NX, Onshape 與 Solvespace.</p>
 <p>CAD1 緣起說明與介紹(Onshape)</p>
 <p><span style="color: #ff6600;"><span style="color: #333333;">(origin)</span>Onshape's</span> company was founded in 2012. The software originated in 2015. It was founded by <span style="color: #800000;">Jon Hirschtick</span>. He is also the founder of <span style="color: #ff6600;">Solidworks.</span></p>

@@ -2,7 +2,7 @@
         <head>
         <title>cad2021 homework site</title>
         <meta charset="utf-8">
-<meta property="head" content="H1">
+<meta property="head" content="H2">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link href="https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700,900" rel="stylesheet">
         <link rel="stylesheet" href="./../cmsimde/static/chimper/fonts/icomoon/style.css">
@@ -139,14 +139,89 @@ img.add_border {
           </div>
           
         </header>
-    <div id="tipue_search_content"> <a href='Task.html'>Next</a> >> Task<br /><h1>About</h1>
-<p>本學期的電腦輔助設計實習, 要求每一位學員根據本 HW template 的格式建立個人的作業倉儲與網頁.</p>
-<hr/>
-<p>40923225</p>
-<p>網站倉儲:<a href="https://github.com/40923225/cad2021_hw"> https://github.com/40923225/cad2021_hw</a></p>
-<p>網站連結:<a href="https://40923225.github.io/cad2021_hw/content/index.html"> https://40923225.github.io/cad2021_hw/content/index.html</a></p>
-<p>其他與作者或作業相關資料說明或介紹</p>
-<br /> <a href='Task.html'>Next</a> >> Task</div>
+    <div id="tipue_search_content">Task << <a href='Task.html'>Previous</a> <a href='hwpages(ctrl+c).html'>Next</a> >> hwpages(ctrl+c)<br /><h1>hwpages(run)</h1>
+<!-- 導入 brython 程式庫 -->
+<script src="./../cmsimde/static/brython.js"></script>
+<script src="./../cmsimde/static/brython_stdlib.js"></script>
+<!-- 啟動 Brython -->
+<script>
+window.onload=function(){
+brython({debug:1, pythonpath:['./../cmsimde/static/','./../downloads/py/']});
+}
+</script>
+<div id="brython_div"></div>
+<script type="text/python">
+from browser import html
+from browser import document
+import random
+
+brython_div = document["brython_div"]
+
+url = "https://gist.githubusercontent.com/mdecourse/b11a88a98655d41055c47f08fe94788f/raw/8a27e6885ee1a5074bcf864d741679afeac796c4/2b_w2_stud_list.txt"
+
+data = open(url).readlines()
+# 檢查資料筆數, 第一筆為 title
+#print(data)
+#print(len(data))
+data = data[1:]
+#print(data)
+
+# 根據 href 與 content 將 html 元件中的 anchor 插入頁面
+def makeLink(href, content):
+    brython_div <= html.A(content, href=href)
+    #brython_div <= html.BR()
+
+
+# 從學員資料中隨機取出 10 位學員的網頁進行查核
+select = 10
+course = "cad2021"
+
+for i in range(len(data)):
+    num_github = data[i] 
+    num = num_github.split("\t")[0]
+    account = num_github.split("\t")[1]
+    if account == "":
+        account = num
+    content = str(num)
+    hwhref = "https://"+ str(account) + ".github.io/"+course+ "_hw"
+    repohref = "https://github.com/"+ str(account) +"/"+course +"_hw"
+    brython_div <= "repo: "
+    makeLink(repohref, content)
+    brython_div <= " www: "
+    makeLink(hwhref, content)
+    brython_div <= html.BR()
+
+    # 將程式載入編輯區
+    Ace.editor.setValue(prog)
+    Ace.editor.scrollToRow(0)
+    Ace.editor.gotoLine(0)
+    # 直接執行程式
+    #ns = {'__name__':'__main__'}
+    #exec(prog, ns)
+    # 按下 run 按鈕
+    Ace.run()
+
+# 執行程式, 顯示輸出結果與清除輸出結果及對應按鈕綁定
+doc['kw_run'].bind('click', Ace.run)
+doc['kw_show_console'].bind('click', Ace.show_console)
+doc['kw_clear_console'].bind('click', Ace.clear_console)
+doc['clear_bd'].bind('click', clear_bd)
+# 呼叫函式執行
+run()
+</script>
+<p><!-- 用來顯示程式碼的 editor 區域 --></p>
+<div id="kw_editor" style="width: 600px; height: 300px;"></div>
+<p><!-- 以下的表單與按鈕與前面的 Javascript doSave 函式以及 FileSaver.min.js 互相配合 --></p>
+<!-- 存擋表單開始 --><form><label>Filename: <input id="kw_filename" placeholder="input file name" type="text"/>.py</label> <input onclick="doSave('kw_py_src', 'kw_filename');" type="submit" value="Save"/></form><!-- 存擋表單結束 -->
+<p></p>
+<!-- 執行與清除按鈕開始 -->
+<p><button id="kw_run">Run</button> <button id="kw_show_console">Output</button> <button id="kw_clear_console">清除輸出區</button><button id="clear_bd">清除繪圖區</button><button onclick="window.location.reload()">Reload</button></p>
+<!-- 執行與清除按鈕結束 -->
+<p></p>
+<!-- 程式執行 ouput 區 -->
+<div style="width: 100%; height: 100%;"><textarea autocomplete="off" id="kw_console"></textarea></div>
+<!-- Brython 程式執行的結果, 都以 brython_div 作為切入位置 -->
+<div id="brython_div"></div><br />Task << <a href='Task.html'>Previous</a> <a href='hwpages(ctrl+c).html'>Next</a> >> hwpages(ctrl+c)</div>
         
     <!-- footer -->
       <div class="container">
